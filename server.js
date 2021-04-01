@@ -18,8 +18,8 @@ mongoose.connect("mongodb://localhost/fitness", {
   useFindAndModify: false
 });
 
-app.use(require("./routes/routeAPI.js"));
-app.use(require("./routes/routeHTML.js"));
+app.use(require("./routes/API.js"));
+app.use(require("./routes/HTML.js"));
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);

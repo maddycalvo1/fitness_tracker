@@ -2,12 +2,12 @@ var db = require('../models');
 
 module.exports = function (app) {
 
-    app.get("/api/workouts", (req, res) => {
+    app.get("/api/fitness", (req, res) => {
 
-        db.Workout.aggregate([
+        db.Fitness.aggregate([
             {
                 $addFields: {
-                    totalTime: { $sum: "$exercises.time" }
+                    totalTime: { $sum: "$workout.time" }
                 }
             }]).then((data) => {
                 res.json(data);
@@ -16,8 +16,8 @@ module.exports = function (app) {
             });
     });
 
-    app.post("/api/workouts", (req, res) => {
-        db.Workout.create({}
+    app.post("/api/fitness", (req, res) => {
+        db.Fitness.create({}
             , (err, data) => {
                 if (err) return err;
                 else res.json(data);
@@ -25,18 +25,18 @@ module.exports = function (app) {
 
     });
 
-    app.put("/api/workouts/:id", (req, res) => {
-        db.Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } }, (err, data) => {
+    app.put("/api/fitness/:id", (req, res) => {
+        db.Fitness.findByIdAndUpdate(req.params.id, { $push: { workout: req.body } }, (err, data) => {
             if (err) return err;
             else res.json(data);
         })
     });
 
-    app.get("/api/workouts/range", (req, res) => {
-        db.Workout.aggregate([
+    app.get("/api/fitness/range", (req, res) => {
+        db.Fitness.aggregate([
             {
                 $addFields: {
-                    totalDuration: { $sum: "$exercises.duration" }
+                    totalTime: { $sum: "$workout.time" }
                 }
             },
             { $limit: 7 }
